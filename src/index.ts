@@ -39,7 +39,11 @@ const app = new Elysia()
           }),
         },
       )
-      .delete("/:id", ({ params: { id } }) => id, {
+      .delete("/:id", ({ params: { id } }) => {
+        if (cards.length <= id || id < 0) return Error("Card not found");
+        cards.splice(id, 1);
+        return { success: true };
+      }, {
         params: t.Object({
           id: t.Number(),
         }),
